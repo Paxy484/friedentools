@@ -1,0 +1,97 @@
+.TH FRIEDENTOOLS 1 "Version 1.0 Alpha" "FRIEDENTOOLS USER MANUAL"
+.SH NAME
+friedentools \- A clean-room, unencumbered, universally compatible asset compiler and builder suite for classic 2.5D game archives
+.SH SYNOPSIS
+.B friedentools
+.B \-u
+|
+.B \-\-unpack
+.I <input.wad>
+.I <output_directory>
+.RB [ \-\-mus2mid ]
+.br
+.B friedentools
+.B \-p
+|
+.B \-\-pack
+.I <input_directory>
+.I <output.wad>
+.I <IWAD|PWAD>
+.br
+.B friedentools
+.B \-t
+|
+.B \-\-texture
+.I <texture.txt>
+.I <output_pnames.lmp>
+.I <output_texture1.lmp>
+.br
+.B friedentools
+.B \-f
+|
+.B \-\-flat
+.I <input_image.png>
+.I <output_flat.lmp>
+.br
+.B friedentools
+.B \-s
+|
+.B \-\-sound
+.I <input_audio.wav>
+.I <output_sound.lmp>
+.br
+.B friedentools
+.B \-g
+|
+.B \-\-graphic
+.I <input.png>
+.I <playpal.lmp>
+.I <output.lmp>
+.I <origin_x>
+.I <origin_y>
+.SH DESCRIPTION
+.B friedentools
+is a modular, dependency-free, cross-platform multimedia compiler toolset built completely from scratch in pure C. 
+.PP
+It was engineered under the strict parameters of the permissive 3-Clause BSD License to provide a legally unencumbered toolkit for building standalone game assets and managing WAD archive databases without requiring proprietary toolchains or legacy software dependencies.
+.PP
+Every binary compilation pass enforced by the tool chain adheres to universal architectural alignments (padding all output data structures to strict 4-byte boundaries and normalizing file identifiers to uppercase strings), guaranteeing 100% stable compatibility with historical executables and modern source port engines.
+.SH OPTIONS
+.TP
+.BI \-u \fR,\fP \ \-\-unpack \ <wad> \ <dir> \ [\-\-mus2mid]
+Decomposes a primary data package file into structured subdirectories. Employs a dynamic namespace splitter loop that strips section fence markers, isolating mapped elements to safeguard directories against file namespace duplication collisions and text truncation overwrites.
+.br
+If the optional
+.B \-\-mus2mid
+parameter switch is passed, the extractor intercepts all embedded audio lumps starting with the legacy compressed signature format ("MUS\\x1A"), automatically transcodes them on-the-fly, and outputs them exclusively as standard Type 0 MIDI arrays with a clean 
+.B .mid
+extension instead of raw unhampered lump bytes.
+.TP
+.BI \-p \fR,\fP \ \-\-pack \ <dir> \ <wad> \ <type>
+Crawls a target folder architecture line-by-line using custom text manifests, encoding raw structural layout records sequentially into a finalized little-endian binary archive. Validates input types to append proper "IWAD" or "PWAD" signature tags.
+.TP
+.BI \-t \fR,\fP \ \-\-texture \ <txt> \ <pn> \ <tx1>
+Parses human-readable multi-patch composition layout blueprints and serializes them into mathematically synchronized binary \fBPNAMES\fR and \fBTEXTURE1\fR registry index lumps. Includes automatic 4-byte boundary offset padding checks to block hardware alignment memory faults.
+.TP
+.BI \-f \fR,\fP \ \-\-flat \ <image> \ <output.lmp>
+Uses integrated single-header decoding arrays to validate and strip a source file down into a raw 4,096-byte array representing a 64x64 uncompressed floor or ceiling tile.
+.TP
+.BI \-s \fR,\fP \ \-\-sound \ <wav> \ <output.lmp>
+Decodes a digital audio track, performs a high-precision monaural mixdown pass, and employs fractional linear interpolation to down-sample the waveform to the standard 11,025 Hz frequency layer. It serializes data with the explicit structural padding rings and offset counters required by hyper-sensitive vanilla validation loops.
+.TP
+.BI \-g \fR,\fP \ \-\-graphic \ <png> \ <pal> \ <out> \ <x> \ <y>
+Translates modern 32-bit transparent graphics into column-oriented binary bitstreams. Implements a 3D Euclidean distance vector matching engine that automatically quantizes colors directly down to the 256-color index table coordinates of a target master palette while executing alpha-channel bounding box edge trimming.
+.SH EXIT STATUS
+.TP
+.B 0
+Success. Multimedia transcoding or data bundling operations completed safely.
+.TP
+.B 1
+Failure. File parameters were incorrect, dependencies were missing, or binary writes encountered disk block alignment bugs.
+.SH AUTHORS
+Written by Rafael Peixoto.
+.SH SEE ALSO
+.BR vernichtung (6),
+.BR chocolatedoom (6),
+.BR crispydoom (6),
+.BR deutex (6)

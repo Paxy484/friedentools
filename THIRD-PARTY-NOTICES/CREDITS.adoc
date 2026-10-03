@@ -1,0 +1,62 @@
+= FRIEDEN TOOLS CREDITS
+
+I would like to thank these people for their hard work:
+
+* *<stdio.h>, <stdlib.h>, <string.h>, <math.h>, <ctype.h>* +
+  _Architects_: Dennis Ritchie & Brian Kernighan (AT&T Bell Laboratories) +
+  Standardized by the ANSI / ISO C Specification Committees. +
+  Provides the primitive foundation for POSIX data streams, pointer traversal math, and character normalization loops.
+
+* *<stdint.h>* +
+  _Architects_: ISO/IEC JTC 1/SC 22/WG14 Committee (C99 Specification) +
+  Provides exact, invariant integer bit-widths (`uint32_t`, `int16_t`) to guarantee cross-platform memory safety during structural binary serialization passes.
+
+* *<sys/stat.h>, <sys/types.h>* +
+  _Architects_: IEEE Computer Society (POSIX.1 Specification Committees) +
+  Provides the foundational system-level operational layer for interacting with physical storage structures and creating directories.
+
+* *stb_image.h* +
+  _Architects_: Sean Barrett and the STB Single-Header Community. +
+  Released into the Public Domain / MIT-0 License context. +
+  Provides the lightning-fast, ultra-lightweight image decoding and loading framework used by FriedenTools to ingest source PNG graphics seamlessly with absolute zero build configuration noise.
+
+* *dr_wav.h* +
+  _Architects_: David Reid and the dr_libs Single-Header Community. +
+  Released into the Public Domain / MIT-0 License context. +
+  Provides the pristine, high-fidelity digital audio decoding engine used by FriedenTools to harvest raw PCM samples from modern container formats without pulling in bloated external multimedia libraries.
+
+* *Clang / LLD / LLVM Assembler* +
+  _Architects_: LLVM Community and contributors. +
+  Licensed under Apache License v2.0 with LLVM Exceptions. +
+  Processes advanced compiler optimizations, loop unrolling diagnostics, and lightning-fast binary linking mapping for modern system frameworks.
+
+* *GCC / GNU Assembler / GNU Linker* +
+  _Architects_: Free Software Foundation and contributors. +
+  License: GPLv3+ and GPLv3+ with GCC Runtime Library Exception. +
+  Provides the foundational compilation infrastructure for POSIX targets and cross-compilation environment mappings.
+
+* *GNU Make* +
+  _Architects_: Richard Stallman, Roland McGrath, and the FSF Contributors. +
+  Licensed under the GNU General Public License v3+. +
+  Provides the advanced build automation loop and dependency tracking structures used to parse Makefiles natively on Linux and MSYS2 environments.
+
+* *The DOOM / WAD Archive Architecture* +
+  _Architects_: id Software (John Carmack, John Romero, Adrian Carmack, Kevin Cloud) and contributors. +
+  Designed the foundational unencumbered, linear WAD container framework, 8-character string token dictionary lookups, raw floor/ceiling flats, and column-packed vertical patch graphic structures.
+
+* *The DMX Audio Specification* +
+  _Architects_: Paul Radek (Digital Music eXpress library). +
+  Engineered the strict, historical 8-bit unsigned PCM linear audio layout requirements, including the infamous header offset counter limits and front/tail sound data stabilization padding rings.
+
+* *The Freedoom Project & Open AssetPool* +
+  _Architects_: Mike Westest, Jon Dowland, and the Freedoom Community. +
+  Licensed under the permissive 3-Clause BSD License. +
+  Provides the phenomenal, completely free, and legally clean baseline testing assets (`freedoom2.wad`), master palettes (`playpal.lmp`), and text configurations that made the automated validation verification steps of this project possible.
+
+---
+
+[NOTE]
+.THANK YOU!
+====
+And most importantly, **THANK YOU** to you, the programmer, the tester, the person, any person at all!
+====

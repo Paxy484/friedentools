@@ -1,0 +1,131 @@
+= FRIEDEN TOOLS COMPILATION TUTORIAL
+
+This guide outlines the system dependencies, compilation procedures, and portable distribution techniques required to build and bundle the FriedenTools toolkit framework from source.
+
+== COMPILATION DEPENDENCIES
+To compile this project, the host operating system must provide:
+
+1. A POSIX-compliant C compiler (`cc` / `clang` / `gcc`)
+2. Standard C runtime headers (`glibc`, `musl`, BSD `libc`, or `ucrt` in Windows)
+
+Because FriedenTools is built entirely on pure POSIX C, it has *ZERO* massive external framework dependencies. We do not use SDL2, FluidSynth, or any heavy runtime libraries. The third-party image and sound decoders (stb_image.h and dr_wav.h) are single-header frameworks already bundled right inside our `include/` directory tree layout!
+
+== DEPENDENCY INSTALLATION
+
+=== Debian / Linux Mint / Ubuntu
+Install the standard system compilation utilities:
+
+[source,sh]
+----
+sudo apt update
+sudo apt install build-essential clang
+----
+
+NOTE: `clang` is completely optional, but available in case you prefer it over native `gcc`.
+
+=== Arch Linux
+Deploy the native `base-devel` toolkit layout:
+
+[source,sh]
+----
+sudo pacman -Syu
+sudo pacman -S base-devel clang
+----
+
+NOTE: `clang` is completely optional, but available in case you want to use it.
+
+=== FreeBSD
+The baseline Clang compiler is already built natively into the FreeBSD base operating system layer, meaning no package downloads are needed to build this toolkit!
+
+== BUILD INSTRUCTIONS (UNIX-LIKE SYSTEMS)
+
+1. Open your terminal environment inside the root project directory.
+2. Initialize and grant execution permissions to the configuration script:
++
+[source,sh]
+----
+chmod +x ./configure
+----
+
+3. Run the custom POSIX configuration script to probe local system headers, locate the compiler toolchain, and dynamically generate the local `Makefile`:
++
+[source,sh]
+----
+./configure
+----
+
+4. Execute the build automation engine to compile the final binary target:
++
+[source,sh]
+----
+make
+----
+
+5. [OPTIONAL] Install the optimized binary and the custom manual pages directly into your system paths:
++
+[source,sh]
+----
+sudo make install
+----
+
+6. To wipe compiled object artifacts and restore the source tree to a clean slate:
++
+[source,sh]
+----
+make clean
+----
+
+[TIP]
+====
+*Debugging Builds*: If you are troubleshooting memory faults or want to run the tools inside *GDB* or *LLDB*, you can bypass the standard configuration path and compile with full debugging symbol trackers natively by passing the debug argument parameter:
+`./configure --debug` followed by `make`.
+====
+
+== BUILD INSTRUCTIONS (WINDOWS VIA MSYS2 ENVIRONMENT)
+
+1. Download and initialize the modern MSYS2 environment subsystem.
+2. Select your preferred environment profile window and deploy the corresponding package toolchains via the `pacman` subsystem:
+
+*OPTION A: PURE LLVM / CLANG STACK*
+* Launch the **CLANG64** terminal profile environment window.
+* Synchronize and install the LLVM tools:
++
+[source,sh]
+----
+pacman -Syu
+pacman -S mingw-w64-clang-x86_64-toolchain
+----
+
+*OPTION B: TRADITIONAL GNU / GCC STACK*
+* Launch the **UCRT64** terminal profile environment window.
+* Synchronize and install the clean runtime GNU tools:
++
+[source,sh]
+----
+pacman -Syu
+pacman -S mingw-w64-ucrt-x86_64-toolchain
+----
+
+3. Execute the standard configuration and build sequence inside your project workspace path:
++
+[source,sh]
+----
+./configure
+make
+----
+
+The configuration engine will automatically detect the MSYS2 target profile environment and append the native `.exe` file extension to output a clean, standalone, unoptimized 64-bit Windows binary!
+
+NOTE: Because Windows users expect tools to be self-contained, the generated `Makefile` on MSYS2 completely strips out the Unix `install` and `uninstall` rules automatically so you do not accidentally corrupt your environment paths.
+
+== CREATING PORTABLE DISTRIBUTIONS
+
+Because FriedenTools compiles into a completely standalone binary executable with *zero shared object library dependencies* besides the core OS runtime (`libc` and `libm`), creating a portable distribution is incredibly simple. 
+
+You do not need to ship any extra `.dll` or `.so` files next to it. Simply grab the compiled binary (`friedentools` or `friedentools.exe`), drop it onto any machine running the same operating system, and it will run instantly with maximum performance!
+
+---
+
+And that is all.
+
+Ok, stay safe out there. Have fun.

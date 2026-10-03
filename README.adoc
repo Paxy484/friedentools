@@ -1,0 +1,59 @@
+= FRIEDEN TOOLS (VERSION 1.0 Alpha)
+
+Well, Folks,
+Here it is: FriedenTools at your hands!
+
+== WHAT IS IT?
+FriedenTools is a clean-room, unencumbered, universally compatible asset compiler and builder suite for classic 2.5D WAD games built completely from scratch in portable C.
+
+FriedenTools exists to be a completely independent, zero-dependency alternative to legacy WAD processing tools. It matches the strict internal binary alignment constraints of classic port engines without pulling in bloated script runtimes, breaking interpreter versions, or forcing commercial file locks. 
+
+Many thanks to Sean Barrett (stb_image) and David Reid (dr_wav) for their incredible, public-domain single-header library files.
+LICENSES TEXT FOR THIRD-PARTY UTILITIES CAN BE FOUND IN THE "THIRD-PARTY-NOTICES" FOLDER.
+
+== LICENSING
+This tool suite is officially released under the permissive 3-Clause BSD License.
+See the LICENSE file for full details.
+
+== UNIVERSAL VANILLA COMPATIBILITY
+FriedenTools is designed to compile multimedia assets that satisfy the hyper-strict validation loops of Chocolate Doom, Crispy Doom, and your own Vernichtung engine. 
+
+Because we follow strict id Tech 1 architectural specifications, a file built with FriedenTools passes vanilla constraints perfectly:
+
+* *Strict 4-Byte Struct Padding* — Every chunk compilation pass automatically tracks and forces physical data file stream offsets onto clean 4-byte boundaries, stopping unaligned memory access crashes (SIGBUS) dead in their tracks.
+* *Alpha-Masked Sprite Posts* — Automatically rips apart transparent PNG sheets into vertical column-oriented pixel blocks, injecting the exact historical post headers and legacy null padding trailing bytes the software engine expects.
+* *Euclidean Color Quantization* — Features an embedded 3D vector color mapping engine that scans transparent images and instantly snaps colors to the closest matching coordinates inside your unencumbered playpal.lmp file.
+* *Padded Vanilla Audio* — Automatically processes modern WAV tracks down to monaural 11,025 Hz 8-bit unsigned PCM streams, forcing the historical +16 byte counter offsets and front/tail stabilization rings needed by old DMX sound drivers.
+* *On-the-Fly Music Decoding* — Features your integrated clean-room `mus2mid` decoder core to cleanly translate legacy compressed music streams back into standard Type 0 MIDI sequences without 64KB boundary bottlenecks.
+* *Basically, a lightweight DeuTex replacement but written from scratch in pure, native C!*
+
+== CORE UTILITY MODULES
+* *Namespace Sorting Unpacker (`--unpack`)* — Crawls incoming database archives and automatically breaks files down into structural subdirectories (/S/ for sprites, /F/ for flats, etc.), blocking filename duplicate collisions and truncations.
+  +
+  Accepts an optional *`--mus2mid`* parameter switch to intercept all legacy compressed audio tracks, automatically transcode them, and write them out exclusively as standard *.mid* files with zero folder tree clutter.
+* *Linear WAD Assembler (`--pack`)* — Compiles structured directories line-by-line using plain text manifests into pristine little-endian game containers.
+* *Texture Table Encoder (`--texture`)* — Reads human-readable structural sheets and serializes mathematically synchronized binary PNAMES and TEXTURE1 registry index lumps.
+* *Flat Plane Stripper (`--flat`)* — Decodes and validates graphics, stripping away all container strings to output perfect, raw 4,096-byte floor/ceiling tiles.
+* *Patch/Sprite Compiler (`--graphic`)* — Performs automated transparency edge trimming and 3D Euclidean color mapping to output optimized, column-packed structures.
+
+== CURRENT STATUS & ROADMAP
+The core folder tree parser, string normalizer loop, linear down-sampler arrays, and binary asset generation blocks are 100% operational, optimized, and fully linked. You can pull down the source, run the configuration system, compile via standard Make commands, and instantly unpack a full retail archive or format custom PNGs/WAVs in microseconds!
+
+Future milestones include:
+* Writing a batch shell script wrapper to auto-convert whole sprite sheets at once.
+* Investigating what unexpected parsing bugs show up when breaking crazy custom community total conversions.
+
+Basically, the GOAL of FriedenTools is to handle all the heavy asset processing lifting so your engine toolchain stays pure and lightweight!
+
+== CONTRIBUTING TO FRIEDEN TOOLS
+See the CONTRIBUTING file!
+
+---
+
+And that is all.
+
+I don't know how many people are going to look at FriedenTools, but I think at least one person is going to look at it, which is me!
+
+Ok, sorry, but stay safe out there.
+
+Have fun.

@@ -1,0 +1,185 @@
+#!/bin/sh
+
+# Initialize flag state trackers
+DEBUG_MODE="no"
+
+# Pure POSIX argument parser loop
+for arg in "$@"; do
+    case "$arg" in
+        -debug|--debug)
+            DEBUG_MODE="yes"
+            ;;
+        *)
+            echo "[WARNING] Unknown configuration parameter: $arg" >&2
+            ;;
+    esac
+done
+
+CC="cc"
+printf "checking for cc... "
+if command -v cc >/dev/null 2>&1; then
+    echo "yes"
+else
+    echo "no"
+    echo "[ERROR] System compiler 'cc' not found." >&2
+    exit 1
+fi
+
+# Hardened validation tracking check for the system linker tool
+LD="ld"
+printf "checking for ld... "
+if command -v ld >/dev/null 2>&1; then
+    echo "yes"
+else
+    echo "no"
+    echo "[ERROR] linker 'ld' not found." >&2
+    exit 1
+fi
+
+# 1. Comprehensive validation loop over asset tool headers
+for header in stdio.h stdlib.h stdint.h string.h ctype.h math.h sys/stat.h sys/types.h; do
+    printf "checking for %s... " "$header"
+    
+    # Check if the system compiler can pre-process the header successfully
+    if echo "#include <$header>" | "$CC" -E - >/dev/null 2>&1; then
+        echo "yes"
+    else
+        echo "no"
+        echo "[ERROR] Required header dependency <$header> is missing." >&2
+        exit 1
+    fi
+done
+
+# 2. Set final cross-platform flags and target layouts
+EXE=""
+IS_WINDOWS="no"
+
+if [ "$DEBUG_MODE" = "yes" ]; then
+    printf "configure: configuring build for DEBUGGING... \n"
+    CFLAGS="-Wall -Wextra -g -O0 -Iinclude"
+else
+    CFLAGS="-Wall -Wextra -Iinclude"
+fi
+
+LIBS="-lm"
+
+case "$(uname -s 2>/dev/null)" in
+    *MINGW*|*MSYS*)
+        EXE=".exe"
+        IS_WINDOWS="yes"
+        ;;
+    *)
+        # Keep standard POSIX limits intact
+        ;;
+esac
+
+# 3. Pure POSIX Source & Object Expansion Logic
+SRCS=""
+OBJS=""
+
+for f in src/*.c; do
+    if [ -f "$f" ]; then
+        if [ -z "$SRCS" ]; then
+            SRCS="$f"
+        else
+            SRCS="$SRCS $f"
+        fi
+        bare_obj=$(echo "$f" | sed 's|^src/||' | sed 's|\.c$|\.o|')
+        if [ -z "$OBJS" ]; then
+            OBJS="$bare_obj"
+        else
+            OBJS="$OBJS $bare_obj"
+        fi
+    fi
+done
+
+# Instantiate a true POSIX Tab variable to guarantee rule separators
+T=$(printf '\t')
+
+# 4. Output the completed local build rules Makefile
+printf "configure: creating Makefile... "
+cat << EOF > Makefile
+CC = $CC
+LD = $LD
+CFLAGS = $CFLAGS
+LIBS = $LIBS
+TARGET = friedentools$EXE
+
+SRCS = $SRCS
+OBJS = $OBJS
+EOF
+
+# Conditionally append standard Unix variables if not building on Windows targets
+if [ "$IS_WINDOWS" = "no" ]; then
+cat << EOF >> Makefile
+
+# Standard Unix installation pathway flags
+PREFIX ?= /usr/local
+BINDIR = \$(PREFIX)/bin
+MANDIR = \$(PREFIX)/share/man/man1
+EOF
+fi
+
+cat << EOF >> Makefile
+
+all: \$(TARGET)
+
+\$(TARGET): \$(OBJS)
+${T}\$(CC) \$(CFLAGS) \$(OBJS) -o \$(TARGET) \$(LIBS)
+
+main.o: src/main.c
+${T}\$(CC) \$(CFLAGS) -c src/main.c -o main.o
+
+mus2mid.o: src/mus2mid.c
+${T}\$(CC) \$(CFLAGS) -c src/mus2mid.c -o mus2mid.o
+
+f_unpack.o: src/f_unpack.c
+${T}\$(CC) \$(CFLAGS) -c src/f_unpack.c -o f_unpack.o
+
+f_pack.o: src/f_pack.c
+${T}\$(CC) \$(CFLAGS) -c src/f_pack.c -o f_pack.o
+
+f_texture.o: src/f_texture.c
+${T}\$(CC) \$(CFLAGS) -c src/f_texture.c -o f_texture.o
+
+f_flat.o: src/f_flat.c
+${T}\$(CC) \$(CFLAGS) -c src/f_flat.c -o f_flat.o
+
+f_sound.o: src/f_sound.c
+${T}\$(CC) \$(CFLAGS) -c src/f_sound.c -o f_sound.o
+
+f_graphic.o: src/f_graphic.c
+${T}\$(CC) \$(CFLAGS) -c src/f_graphic.c -o f_graphic.o
+EOF
+
+# 5. Inject installation block logic strictly for POSIX/Unix systems
+if [ "$IS_WINDOWS" = "no" ]; then
+cat << EOF >> Makefile
+
+install: \$(TARGET)
+${T}mkdir -p \$(DESTDIR)\$(BINDIR)
+${T}mkdir -p \$(DESTDIR)\$(MANDIR)
+${T}cp -f \$(TARGET) \$(DESTDIR)\$(BINDIR)/
+${T}chmod 755 \$(DESTDIR)\$(BINDIR)/\$(TARGET)
+${T}cp -f MAN/friedentools.1 \$(DESTDIR)\$(MANDIR)/
+${T}chmod 644 \$(DESTDIR)\$(MANDIR)/friedentools.1
+${T}@echo "FriedenTools framework installed successfully."
+
+uninstall:
+${T}rm -f \$(DESTDIR)\$(BINDIR)/\$(TARGET)
+${T}rm -f \$(DESTDIR)\$(MANDIR)/friedentools.1
+${T}@echo "FriedenTools components removed from system paths."
+EOF
+fi
+
+cat << EOF >> Makefile
+
+clean:
+${T}rm -f \$(OBJS) \$(TARGET)
+
+distclean: clean
+${T}rm -f Makefile
+
+.PHONY: all clean distclean$( [ "$IS_WINDOWS" = "no" ] && printf " install uninstall" )
+EOF
+echo "done"

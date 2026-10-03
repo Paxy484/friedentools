@@ -1,0 +1,59 @@
+= FRIEDEN TOOLS CONTRIBUTING GUIDE
+
+Hey everyone,
+Thanks for checking out cooperation on FriedenTools! If you want to help push this asset framework forward, here is what you need to know.
+
+== WHAT IS THE GOAL?
+FriedenTools exists to be a completely independent, zero-dependency alternative to legacy WAD processing tools. It matches the strict internal binary alignment constraints of classic port engines without pulling in bloated script runtimes, breaking interpreter versions, or forcing commercial file locks. 
+
+== LICENSING & COPYLEFT
+This project is officially released under the *3-Clause BSD License*.
+
+By contributing code, bug fixes, or patches here, you agree that your work will be under the same BSD license context. We do not accept viral copyleft code into the core tree because we want to keep this project completely permissive
+
+== THE CODE STRUCTURE
+The toolkit is split into isolated C modules so it is easy to navigate:
+
+[cols="1,3", options="header"]
+|===
+
+| Module | Core Purpose / Subsystem responsibilities
+| `src/f_unpack.c`   | Namespace-sorting extraction loop handling fence markers and `--mus2mid` routing gates.
+| `src/f_pack.c`     | Manifest-driven line-by-line database assembler forcing 4-byte boundaries alignment.
+| `src/f_texture.c`  | Transcoder engine compiling composite text maps into mathematically padded binary PNAMES/TEXTURE1 lumps.
+| `src/f_flat.c`     | 64x64 flat plane graphic stripper powered by the zero-dependency stb_image.h header.
+| `src/f_sound.c`    | Monaural linear audio down-sampler implementing the DMX sound driver stabilization rings padding.
+| `src/f_graphic.c`  | Bounding-box trimming column sprite serializer featuring a 3D Euclidean color index quantizer.
+| `src/mus2mid.c`    | Reverse-engineered 140Hz compressed audio decoder transforming MUS chunks to standard MIDI tracks.
+| `src/main.c`       | Top-level CLI argument parsing gateway string router.
+|===
+
+If you add anything, make sure it stays completely modular, handles variables securely, includes defensive array boundary checks, and has clean comments to explain your logic!
+
+== AI ASSISTANT & LLM CODE POLICY
+I used AI code as a tool to help make FriedenTools. AI coding is fine, but if you use an AI assistant to help you write patches for this toolkit, you *MUST* follow my strict rules:
+
+[WARNING]
+.LLM Verification Rules
+====
+1. *Test on Device First* — Test the code on your physical machine first. Do not blind-paste things.
+2. *Real Developers Only* — AI bots are completely banned from signing their own names to commits.
+3. *Manual Peer Review* — A real human (you!) must manually review and understand the code before sending it over.
+4. *Tools, Not Authors* — LLMs are tools, not the developer. You are the developer.
+====
+
+If you don't like AI at all, feel free to fork FriedenTools or block me!
+
+== WHAT NEEDS FIXING/ADDING RIGHT NOW?
+* *Algorithmic Multi-Patch Edge Cases* — Investigating what unexpected byte array parsing errors show up when breaking crazy custom community total conversions.
+* *Batch Processing Wrappers* — Writing a fast shell script loop helper to let developers process an entire folder of source textures or audio tracks simultaneously via the compiled binary.
+
+== HOW TO SUBMIT WORK
+1. Fork the repo and make your changes on a branch.
+2. Make sure it compiles with using `make` on GCC or Clang.
+3. Keep your commits clean and explicitly explain what your code updates.
+4. Open a Pull Request if you are on GitHub or a Merge Request if you are on GitLab (MR is the GitLab equivalent of a Pull Request).
+
+I don't know how many people are going to contribute, but even small fixes help a ton!
+
+Ok, stay safe out there. Have fun.
